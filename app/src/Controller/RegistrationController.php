@@ -57,7 +57,7 @@ class RegistrationController extends AbstractController
             $em->persist($user);
             $em->flush();
 
-            //воно якогось хрена не робило
+            //воно якогось хрена не робило I mean не було автоматичної привязки користувача при регістрації
            //return $this->redirect($this->generateUrl('register.success'));
 
             return $authenticator->authenticateUser(
@@ -66,16 +66,17 @@ class RegistrationController extends AbstractController
                 $request);
         }
 
-        return $this->render('registration/index.html.twig',[
+        return $this->render('admin/index.html.twig',[
             'form' => $form->createView()
         ] );
 
     }
 
+    //the controller is not used now
     #[Route('/register/success', name: 'register.success')]
     public function success():Response
     {
-        return $this->render('registration/success.html.twig', [
+        return $this->render('admin/success.html.twig', [
         ]);
     }
 

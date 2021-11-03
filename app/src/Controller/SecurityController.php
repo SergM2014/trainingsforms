@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -41,7 +43,15 @@ class SecurityController extends AbstractController
     #[Route('/login/success', name: 'login.success')]
     public function success():Response
     {
-        return $this->render('login/success.html.twig', [
+        return $this->render('admin/success.html.twig', [
+        ]);
+    }
+
+    public function users(UserRepository $userRepository)
+    {
+        $users = $userRepository->findAll();
+        return $this->render('',[
+            'users' =>$users
         ]);
     }
 
