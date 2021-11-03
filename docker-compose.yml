@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  database:
+    container_name: database2
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: trainingsforms_db
+      MYSQL_USER: symfony
+      MYSQL_PASSWORD: symfony
+    ports:
+      - '4307:3306'
+    volumes:
+      - ./mysql:/var/lib/mysql
+#start
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: pma2
+    environment:
+      PMA_HOST: database2
+      PMA_PORT: 3306
+      PMA_USER: symfony
+      PMA_PASSWORD: symfony
+      PMA_ARBITRARY: 1
+    restart: always
+    ports:
+      - 8082:80
+##end
+
+
+  php:
+    container_name: php2
+    build:
+      context: ./php
+    ports:
+      - '9001:9000'
+    volumes:
+      - ./app:/var/www/trainingsforms
+    depends_on:
+      - database
+
+  nginx:
+    container_name: nginx2
+    image: nginx:stable-alpine
+    ports:
+      - '8083:80'
+    volumes:
+      - ./app:/var/www/trainingsforms
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - php
+      - database
