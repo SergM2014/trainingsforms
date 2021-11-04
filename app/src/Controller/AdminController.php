@@ -20,7 +20,7 @@ class AdminController extends AbstractController
 {
 
     #[Route('/admin/users', name: 'admin.users')]
-    public function listUsers(UserRepository $userRepository)
+    public function listUsers(UserRepository $userRepository):Response
     {
         $users = $userRepository->findAll();
 
@@ -34,7 +34,7 @@ class AdminController extends AbstractController
         User $user,
         Request $request,
         UserPasswordEncoderInterface $passwordEncoder,
-    )
+    ):Response
     {
         $form = $this->createFormBuilder($user)
             ->add('email', TextType::class)

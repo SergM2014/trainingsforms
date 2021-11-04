@@ -57,8 +57,6 @@ class RegistrationController extends AbstractController
             $em->persist($user);
             $em->flush();
 
-            //воно якогось хрена не робило I mean не було автоматичної привязки користувача при регістрації
-           //return $this->redirect($this->generateUrl('register.success'));
             $this->addFlash('success', 'User was created');
             return $authenticator->authenticateUser(
                 $user,
