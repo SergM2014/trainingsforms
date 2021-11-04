@@ -2,13 +2,13 @@
 
 {% block body %}
 
-{#   {% for message in app.flashes('success') %}#}
+   {% for message in app.flashes('success') %}
 
-{#      <div class="alert alert-success">#}
-{#         {{ message }}#}
-{#      </div>#}
+      <div class="alert alert-success">
+         {{ message }}
+      </div>
 
-{#   {% endfor %}#}
+   {% endfor %}
 
    <h2>List of all users</h2>
    <table class="table table-stripped">

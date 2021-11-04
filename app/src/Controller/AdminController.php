@@ -18,16 +18,9 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AdminController extends AbstractController
 {
-//    #[Route('/admin', name: 'admin')]
-//    public function index(): Response
-//    {
-//        return $this->render('admin/index.html.twig', [
-//            'controller_name' => 'AdminController',
-//        ]);
-//    }
 
     #[Route('/admin/users', name: 'admin.users')]
-    public function usersList(UserRepository $userRepository)
+    public function listUsers(UserRepository $userRepository)
     {
         $users = $userRepository->findAll();
 
@@ -37,7 +30,7 @@ class AdminController extends AbstractController
     }
 
     #[Route('/admin/users/update/{id}', name: 'admin.user.update')]
-    public function update(
+    public function updateUser(
         User $user,
         Request $request,
         UserPasswordEncoderInterface $passwordEncoder,
@@ -63,22 +56,14 @@ class AdminController extends AbstractController
         $form->handleRequest($request);
         if($form->isSubmitted()){
             $updatedUser = $form->getData();
-//    dump($form,  $data, $request);
-//    die();
-
-          //  $user->setEmail($data['email']);
-//            $user->setPassword(
-//                $passwordEncoder->encodePassword($user, $data['password'])
-//            );
-
+            $updatedUser->setPassword($passwordEncoder->encodePassword($updatedUser, $updatedUser->getPassword()));
             $em = $this->getDoctrine()->getManager();
-//            $em->persist($user);
-            $em->persist($updatedUser);
             $em->flush();
+
+            $this->addFlash('success', 'User was created');
 
             return $this->redirect($this->generateUrl('admin.users'));
         }
-
 
         return $this->render('admin/updateUser.html.twig',[
             'form' => $form->createView(), 'user' => $user

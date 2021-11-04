@@ -46,8 +46,7 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
         if($form->isSubmitted()){
             $data = $form->getData();
-//dump($data);
-//die();
+
             $user = new User();
             $user->setEmail($data['email']);
             $user->setPassword(
@@ -60,7 +59,7 @@ class RegistrationController extends AbstractController
 
             //воно якогось хрена не робило I mean не було автоматичної привязки користувача при регістрації
            //return $this->redirect($this->generateUrl('register.success'));
-
+            $this->addFlash('success', 'User was created');
             return $authenticator->authenticateUser(
                 $user,
                 $formAuthenticator,
