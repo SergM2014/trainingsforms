@@ -17,7 +17,7 @@ class AdminController extends AbstractController
 {
 
     #[Route('/admin/users', name: 'admin.users')]
-    public function listUsers(UserRepository $userRepository):Response
+    public function index(UserRepository $userRepository):Response
     {
         $users = $userRepository->findAll();
 
@@ -26,8 +26,8 @@ class AdminController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/users/update/{id}', name: 'admin.user.update')]
-    public function updateUser(
+    #[Route('/admin/user/update/{id}', name: 'admin.user.update')]
+    public function update(
         User $user,
         Request $request,
         UserPasswordEncoderInterface $passwordEncoder,
@@ -47,9 +47,7 @@ class AdminController extends AbstractController
             return $this->redirect($this->generateUrl('admin.users'));
         }
 
-//        return $this->render('admin/updateUser.html.twig',[
-//            'form' => $form->createView(), 'user' => $user
-//        ]);
+
         return $this->renderForm('admin/updateUser.html.twig', [ 'form' => $form, 'user' => $user ] );
     }
 

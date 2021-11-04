@@ -32,14 +32,9 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if($form->isSubmitted()){
-            $data = $form->getData();
+            $user = $form->getData();
 
-            $user = new User();
-            $user->setEmail($data['email']);
-            $user->setPassword(
-                $passwordEncoder->encodePassword($user, $data['password'])
-            );
-
+            $user->setPassword($passwordEncoder->encodePassword($user, $user->getPassword()));
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
@@ -57,12 +52,5 @@ class RegistrationController extends AbstractController
 
     }
 
-    //the controller is not used now
-    #[Route('/register/success', name: 'register.success')]
-    public function success():Response
-    {
-        return $this->render('admin/success.html.twig', [
-        ]);
-    }
 
 }

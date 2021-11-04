@@ -16,12 +16,7 @@ class SecurityController extends AbstractController
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
-        // if ($this->getUser()) {
-        //     return $this->redirectToRoute('target_path');
-        // }
-
          if ($this->getUser()) {
-             //return $this->redirectToRoute('login.success');
              return $this->redirectToRoute('admin.users');
          }
 
@@ -44,7 +39,6 @@ class SecurityController extends AbstractController
     #[Route('/login/success', name: 'login.success')]
     public function success():Response
     {
-        //return $this->render('admin/success.html.twig');
         return $this->redirectToRoute('admin.users');
     }
 
