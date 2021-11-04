@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\UserType;
 use App\Security\CustomAuthentificatorAuthenticator;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -26,24 +27,10 @@ class RegistrationController extends AbstractController
         CustomAuthentificatorAuthenticator $formAuthenticator
      ): Response
     {
+        $form = $this->createForm(UserType::class);
 
-        $form = $this->createFormBuilder()
-            ->add('email')
-            ->add('password',
-                RepeatedType::class,[
-                    'type' => PasswordType::class,
-                    'required' => true,
-                    'first_options' => ['label' => 'Password'],
-                    'second_options' => ['label' => 'Confirm Password']
-                ])
-            ->add('register', SubmitType::class, [
-                'attr' => [
-                    'class' => 'btn btn-success float-right'
-                ]
-            ])
-            ->getForm()
-        ;
         $form->handleRequest($request);
+
         if($form->isSubmitted()){
             $data = $form->getData();
 
@@ -64,9 +51,9 @@ class RegistrationController extends AbstractController
                 $request);
         }
 
-        return $this->render('admin/index.html.twig',[
-            'form' => $form->createView()
-        ] );
+        return $this->renderForm('admin/index.html.twig', [
+            'form' => $form,
+        ]);
 
     }
 

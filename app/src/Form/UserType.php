@@ -4,6 +4,9 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -13,9 +16,21 @@ class UserType extends AbstractType
     {
         $builder
             ->add('email')
-//            ->add('roles')
-            ->add('password')
-        ;
+            ->add('password',
+                RepeatedType::class,[
+                    'type' => PasswordType::class,
+                    'required' => true,
+                    'first_options' => ['label' => 'Password'],
+                    'second_options' => ['label' => 'Confirm Password']
+                ])
+            ->add('register', SubmitType::class, [
+                'attr' => [
+                    'class' => 'btn btn-success float-right'
+                ]
+            ])
+
+            ;
+
     }
 
     public function configureOptions(OptionsResolver $resolver): void

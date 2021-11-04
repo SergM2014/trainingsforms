@@ -3,12 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\UserType;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -36,22 +33,7 @@ class AdminController extends AbstractController
         UserPasswordEncoderInterface $passwordEncoder,
     ):Response
     {
-        $form = $this->createFormBuilder($user)
-            ->add('email', TextType::class)
-            ->add('password',
-                RepeatedType::class,[
-                    'type' => PasswordType::class,
-//                    'required' => true,
-                    'first_options' => ['label' => 'Create new Password'],
-                    'second_options' => ['label' => 'Confirm new Password']
-                ])
-            ->add('update', SubmitType::class, [
-                'attr' => [
-                    'class' => 'btn btn-success float-right'
-                ]
-            ])
-            ->getForm()
-        ;
+        $form = $this->createForm(UserType::class, $user);
 
         $form->handleRequest($request);
         if($form->isSubmitted()){
@@ -65,9 +47,10 @@ class AdminController extends AbstractController
             return $this->redirect($this->generateUrl('admin.users'));
         }
 
-        return $this->render('admin/updateUser.html.twig',[
-            'form' => $form->createView(), 'user' => $user
-        ]);
+//        return $this->render('admin/updateUser.html.twig',[
+//            'form' => $form->createView(), 'user' => $user
+//        ]);
+        return $this->renderForm('admin/updateUser.html.twig', [ 'form' => $form, 'user' => $user ] );
     }
 
 }
