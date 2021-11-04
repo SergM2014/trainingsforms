@@ -46,7 +46,8 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
         if($form->isSubmitted()){
             $data = $form->getData();
-
+//dump($data);
+//die();
             $user = new User();
             $user->setEmail($data['email']);
             $user->setPassword(
