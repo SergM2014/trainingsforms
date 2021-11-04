@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+{#   {% for message in app.flashes('success') %}#}
+
+{#      <div class="alert alert-success">#}
+{#         {{ message }}#}
+{#      </div>#}
+
+{#   {% endfor %}#}
+
+   <h2>List of all users</h2>
+   <table class="table table-stripped">
+      <thead>
+      <tr>
+         <td>ID</td>
+         <td>Email</td>
+         <td>Update</td>
+      </tr>
+      </thead>
+      <tbody>
+      {% for user in users %}
+         <tr>
+            <td>{{ user.id }}</td>
+            <td>
+               {{ user.email }}
+            </td>
+            <td>
+               <a href="{{ path('admin.user.update', {id: user.id}) }}" class='text-danger' >
+                  Update
+               </a>
+            </td>
+         </tr>
+      {% endfor %}
+      </tbody>
+   </table>
+{% endblock %}

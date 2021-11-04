@@ -21,7 +21,8 @@ class SecurityController extends AbstractController
         // }
 
          if ($this->getUser()) {
-             return $this->redirectToRoute('login.success');
+             //return $this->redirectToRoute('login.success');
+             return $this->redirectToRoute('admin.users');
          }
 
         // get the login error if there is one
@@ -43,17 +44,11 @@ class SecurityController extends AbstractController
     #[Route('/login/success', name: 'login.success')]
     public function success():Response
     {
-        return $this->render('admin/success.html.twig', [
-        ]);
+        //return $this->render('admin/success.html.twig');
+        return $this->redirectToRoute('admin.users');
     }
 
-    public function users(UserRepository $userRepository)
-    {
-        $users = $userRepository->findAll();
-        return $this->render('',[
-            'users' =>$users
-        ]);
-    }
+
 
 
 }
