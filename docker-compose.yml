@@ -13,7 +13,8 @@ services:
     ports:
       - '4307:3306'
     volumes:
-      - ./mysql:/var/lib/mysql
+      - ./mysql:/var/lib/minesql
+      #- ./mysql:/var/lib/mysql
 #start
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
