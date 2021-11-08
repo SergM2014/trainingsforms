@@ -38,7 +38,7 @@ class AdminController extends AbstractController
         $form->handleRequest($request);
         if($form->isSubmitted()){
             $updatedUser = $form->getData();
-            $updatedUser->setPassword($passwordEncoder->encodePassword($updatedUser, $updatedUser->getPassword()));
+            $updatedUser->setPassword($passwordEncoder->encodePassword($updatedUser,  $form->get('password')->getData()));
             $em = $this->getDoctrine()->getManager();
             $em->flush();
 
