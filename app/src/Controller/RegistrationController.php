@@ -4,13 +4,11 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Repository\UserRepository;
 use App\Security\CustomAuthentificatorAuthenticator;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -24,7 +22,8 @@ class RegistrationController extends AbstractController
         Request $request,
         UserPasswordEncoderInterface $passwordEncoder,
         UserAuthenticatorInterface $authenticator,
-        CustomAuthentificatorAuthenticator $formAuthenticator
+        CustomAuthentificatorAuthenticator $formAuthenticator,
+        UserRepository $userRepository
      ): Response
     {
         $form = $this->createForm(UserType::class);
@@ -33,11 +32,9 @@ class RegistrationController extends AbstractController
 
         if($form->isSubmitted()){
             $user = $form->getData();
+            $password = $form->get('password')->getData();
 
-            $user->setPassword($passwordEncoder->encodePassword($user,  $form->get('password')->getData()));
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->flush();
+            $userRepository->save($user, $password, $passwordEncoder);
 
             $this->addFlash('success', 'User was created');
             return $authenticator->authenticateUser(

@@ -30,17 +30,19 @@ class AdminController extends AbstractController
     public function update(
         User $user,
         Request $request,
+        UserRepository $userRepository,
         UserPasswordEncoderInterface $passwordEncoder,
     ):Response
     {
         $form = $this->createForm(UserType::class, $user);
 
+
         $form->handleRequest($request);
         if($form->isSubmitted()){
             $updatedUser = $form->getData();
-            $updatedUser->setPassword($passwordEncoder->encodePassword($updatedUser,  $form->get('password')->getData()));
-            $em = $this->getDoctrine()->getManager();
-            $em->flush();
+            $password = $form->get('password')->getData();
+
+            $userRepository -> save($updatedUser, $password, $passwordEncoder);
 
             $this->addFlash('success', 'User was created');
 
