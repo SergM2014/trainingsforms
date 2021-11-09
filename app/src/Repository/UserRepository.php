@@ -26,7 +26,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     /**
      * Used to upgrade (rehash) the user's password automatically over time.
      */
-    public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
+    public function upgradePassword(User $user, string $newHashedPassword): void
     {
         $user->setPassword($newHashedPassword);
         $this->_em->persist($user);
