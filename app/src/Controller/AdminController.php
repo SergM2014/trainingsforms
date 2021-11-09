@@ -12,7 +12,6 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 
-
 class AdminController extends AbstractController
 {
 
@@ -35,22 +34,16 @@ class AdminController extends AbstractController
     ):Response
     {
         $form = $this->createForm(UserType::class, $user);
-
-
         $form->handleRequest($request);
         if($form->isSubmitted()){
             $updatedUser = $form->getData();
             $password = $form->get('password')->getData();
 
-            $userRepository -> save($updatedUser, $password, $passwordEncoder);
+            $userRepository->save($updatedUser, $password, $passwordEncoder);
 
             $this->addFlash('success', 'User was created');
-
             return $this->redirect($this->generateUrl('admin.users'));
         }
-
-
         return $this->renderForm('admin/updateUser.html.twig', [ 'form' => $form, 'user' => $user ] );
     }
-
 }
